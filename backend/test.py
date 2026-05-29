@@ -1,17 +1,21 @@
-from app.rag.retriever import retrieve_relevant_chunks
+from app.rag.chain import ask_rag
 
 
-query = "Why was Peter worried?"
+question = "Why was Peter worried?"
 
-results = retrieve_relevant_chunks(query)
+response = ask_rag(question)
 
-print("\nRetrieved Chunks:\n")
+print("\nAI ANSWER:\n")
 
-for i, result in enumerate(results):
+print(response["answer"])
 
-    print(f"\nRESULT {i+1}:\n")
+print("\nSOURCES:\n")
 
-    print(result.page_content)
+for i, source in enumerate(response["sources"]):
+
+    print(f"\nSOURCE {i+1}:\n")
+
+    print(source.page_content[:300])
 
     print("\nMETADATA:")
-    print(result.metadata)
+    print(source.metadata)
