@@ -1,0 +1,50 @@
+# Python
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+
+venv/
+.env
+
+# ChromaDB
+
+chroma_db/
+
+# VS Code
+
+.vscode/
+
+# Node
+
+node_modules/
+
+# Logs
+
+*.log
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Build files
+
+dist/
+build/
+
+# Next.js
+
+.next/
+
+# Environment files
+
+.env.local
+
+# Mac
+
+.AppleDouble
+.LSOverride
