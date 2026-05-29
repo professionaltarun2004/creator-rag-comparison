@@ -1,18 +1,17 @@
-from app.services.youtube_service import get_youtube_transcript
-from app.rag.chunking import chunk_text
-from app.rag.vector_store import store_chunks
+from app.rag.retriever import retrieve_relevant_chunks
 
 
-url = "https://www.youtube.com/watch?v=OZQgtnh58Jo"
+query = "Why was Peter worried?"
 
-data = get_youtube_transcript(url)
+results = retrieve_relevant_chunks(query)
 
-chunks = chunk_text(data["transcript"])
+print("\nRetrieved Chunks:\n")
 
-vector_store = store_chunks(
-    chunks=chunks,
-    video_id=data["video_id"]
-)
+for i, result in enumerate(results):
 
-print("\nChunks stored successfully in ChromaDB.")
-print(f"\nTotal chunks stored: {len(chunks)}")
+    print(f"\nRESULT {i+1}:\n")
+
+    print(result.page_content)
+
+    print("\nMETADATA:")
+    print(result.metadata)
