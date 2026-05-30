@@ -77,40 +77,49 @@ export default function VideoCard({
             {
                 videoData && (
 
-                    <div className="mt-6 space-y-2">
+                    <div className="mt-6">
 
-                        <p>
-                            <strong>Title:</strong>
-                            {" "}
-                            {videoData.metadata.title}
-                        </p>
+    <img
+        src={videoData.metadata.thumbnail}
+        alt="thumbnail"
+        className="w-full rounded-xl mb-4"
+    />
 
-                        <p>
-                            <strong>Creator:</strong>
-                            {" "}
-                            {videoData.metadata.creator}
-                        </p>
+    <div className="space-y-2">
 
-                        <p>
-                            <strong>Views:</strong>
-                            {" "}
-                            {videoData.metadata.views}
-                        </p>
+        <p>
+            <strong>Title:</strong>
+            {" "}
+            {videoData.metadata.title}
+        </p>
 
-                        <p>
-                            <strong>Likes:</strong>
-                            {" "}
-                            {videoData.metadata.likes}
-                        </p>
+        <p>
+            <strong>Creator:</strong>
+            {" "}
+            {videoData.metadata.creator}
+        </p>
 
-                        <p>
-                            <strong>Engagement Rate:</strong>
-                            {" "}
-                            {videoData.metadata.engagement_rate}%
-                        </p>
+        <p>
+            <strong>Views:</strong>
+            {" "}
+            {videoData.metadata.views}
+        </p>
 
-                    </div>
+        <p>
+            <strong>Likes:</strong>
+            {" "}
+            {videoData.metadata.likes}
+        </p>
 
+        <p>
+            <strong>Engagement Rate:</strong>
+            {" "}
+            {videoData.metadata.engagement_rate}%
+        </p>
+
+    </div>
+
+</div>
                 )
             }
 

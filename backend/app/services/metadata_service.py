@@ -51,7 +51,8 @@ def get_youtube_metadata(url:str):
             "duration": info.get("duration"),
             "upload_date": info.get("upload_date"),
             "hashtags": info.get("tags", []),
-            "engagement_rate": round(engagement_rate, 2)
+            "engagement_rate": round(engagement_rate, 2),
+            "thumbnail": info.get("thumbnail")
         }
 
         return metadata
