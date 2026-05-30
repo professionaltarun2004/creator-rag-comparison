@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 from app.rag.retriever import retrieve_video_chunks
+from app.rag.memory import get_memory, add_to_memory
 
 load_dotenv()
 
@@ -31,8 +32,20 @@ def compare_videos(question, video_a, video_b):
         [doc.page_content for doc in video_b_docs]
     )
 
+    memory=get_memory()
+
+    memory_context="\n".join(
+        [
+            f"{item['role']}:{item['content']}"
+            for item in memory
+        ]
+    )
+
     prompt = f"""
                 You are an AI creator intelligence assistant.
+
+                Previous Conversation:
+                {memory_context}
 
                 Analyze and compare two videos.
 
@@ -65,6 +78,16 @@ def compare_videos(question, video_a, video_b):
     )
 
     answer = response.choices[0].message.content
+
+    add_to_memory(
+        "user",
+        question
+    )
+
+    add_to_memory(
+        "assistant",
+        answer
+    )
 
     return {
         "answer": answer,
