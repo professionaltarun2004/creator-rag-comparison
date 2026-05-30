@@ -130,7 +130,7 @@ creator-rag-comparison/
 ```
 # System Architecture
 
-![System Architecture](./assets/System architecture creator rag system.png)
+![System Architecture](./assets/architecture-diagram.png)
 ---
 
 # Installation
