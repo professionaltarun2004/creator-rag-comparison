@@ -17,7 +17,23 @@ export default function ChatPanel({
     const [loading, setLoading] = useState(false)
 
     const [response, setResponse] = useState(null)
+    const [displayedAnswer, setDisplayedAnswer] = useState("")
 
+    async function streamText(text) {
+
+        setDisplayedAnswer("")
+
+        for (let i = 0; i < text.length; i++) {
+
+            setDisplayedAnswer(
+                (prev) => prev + text[i]
+            )
+
+            await new Promise(
+                (resolve) => setTimeout(resolve, 10)
+            )
+        }
+    }
 
     async function handleAsk() {
 
@@ -41,6 +57,8 @@ export default function ChatPanel({
             )
 
             setResponse(data)
+
+            await streamText(data.answer)
 
         }
 
@@ -84,22 +102,100 @@ export default function ChatPanel({
             </button>
 
             {
-                response && (
+    response && (
 
-                    <div className="mt-8">
+        <div className="mt-8">
 
-                        <h3 className="text-xl font-semibold mb-4">
-                            AI Answer
-                        </h3>
+            <h3 className="text-xl font-semibold mb-4">
+                AI Answer
+            </h3>
 
-                        <p className="whitespace-pre-wrap leading-7">
-                            {response.answer}
-                        </p>
+            <p className="whitespace-pre-wrap leading-7 mb-8">
+                {displayedAnswer}
+            </p>
+
+
+            <div className="grid grid-cols-2 gap-6">
+
+                <div>
+
+                    <h3 className="text-lg font-semibold mb-4">
+                        Video A Sources
+                    </h3>
+
+                    <div className="space-y-4">
+
+                        {
+                            response.video_a_sources.map(
+                                (source, index) => (
+
+                                    <div
+                                        key={index}
+                                        className="border border-gray-700 p-4 rounded-lg bg-gray-900"
+                                    >
+
+                                        <p className="text-sm mb-3">
+                                            {source.content}
+                                        </p>
+
+                                        <p className="text-xs text-gray-400">
+                                            Video ID:
+                                            {" "}
+                                            {source.metadata.video_id}
+                                        </p>
+
+                                    </div>
+                                )
+                            )
+                        }
 
                     </div>
 
-                )
-            }
+                </div>
+
+
+                <div>
+
+                    <h3 className="text-lg font-semibold mb-4">
+                        Video B Sources
+                    </h3>
+
+                    <div className="space-y-4">
+
+                        {
+                            response.video_b_sources.map(
+                                (source, index) => (
+
+                                    <div
+                                        key={index}
+                                        className="border border-gray-700 p-4 rounded-lg bg-gray-900"
+                                    >
+
+                                        <p className="text-sm mb-3">
+                                            {source.content}
+                                        </p>
+
+                                        <p className="text-xs text-gray-400">
+                                            Video ID:
+                                            {" "}
+                                            {source.metadata.video_id}
+                                        </p>
+
+                                    </div>
+                                )
+                            )
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    )
+}
 
         </div>
     )
