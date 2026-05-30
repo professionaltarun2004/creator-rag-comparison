@@ -4,6 +4,8 @@ An AI-powered full-stack creator intelligence platform that compares social medi
 
 This project enables creators to ingest videos, analyze engagement patterns, compare hooks and storytelling strategies, and receive grounded AI-generated insights with source citations.
 
+Loom video - https://www.loom.com/share/ece0dc958fbb4e3692b11cc61d7e35c7
+
 ---
 
 # Table of Contents
