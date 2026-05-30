@@ -17,32 +17,47 @@ your ingestion pipeline endpoint.
 '''
 
 from fastapi import APIRouter
+
 from app.models.schemas import IngestRequest
+
 from app.services.youtube_service import get_youtube_transcript
+
 from app.rag.chunking import chunk_text
 from app.rag.vector_store import store_chunks
 
-router=APIRouter()
+
+router = APIRouter()
+
 
 @router.post("/ingest")
-
 def ingest_video(request: IngestRequest):
 
-    #extract transcript
-    data=get_youtube_transcript(request.url)
+    #Extract transcript
+    data = get_youtube_transcript(request.url)
 
-    #chunk transcript
-    chunks=chunk_text(data["transcript"])
+    #Chunk transcript
+    chunks = chunk_text(data["transcript"])
 
-    #store embeddings in vector DB
+    #Build metadata
+    metadata = {
+        "video_id": data["video_id"],
+        "platform": "youtube",
+        "creator": "unknown",
+        "views": 0,
+        "likes": 0,
+        "comments": 0,
+        "engagement_rate": 0
+    }
+
+    #Store chunks
     store_chunks(
         chunks=chunks,
-        video_id=data["video_id"]
+        metadata=metadata
     )
 
-    #return response
     return {
         "message": "Video ingested successfully",
-        "video_id":data["video_id"],
-        "total_chunks":len(chunks)
+        "video_id": data["video_id"],
+        "total_chunks": len(chunks),
+        "metadata": metadata
     }

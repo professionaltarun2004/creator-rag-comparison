@@ -28,17 +28,14 @@ from app.rag.embeddings import embedding_model
 
 VECTOR_DB_PATH="chroma_db"
 
-def store_chunks(chunks,video_id):
+def store_chunks(chunks,metadata):
     texts=[]
     metadatas=[]
 
     for chunk in chunks:
         texts.append(chunk)
-        metadatas.append(
-            {
-                "video_id":video_id
-            }
-        )
+        metadatas.append(metadata)
+
     
     vector_store=Chroma.from_texts(
         texts=texts,
