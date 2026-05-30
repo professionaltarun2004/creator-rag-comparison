@@ -1,4 +1,17 @@
+"use client"
+
+import { useState } from "react"
+
+import VideoCard from "../components/VideoCard"
+import ChatPanel from "../components/ChatPanel"
+
+
 export default function Home() {
+
+  const [videoA, setVideoA] = useState("")
+
+  const [videoB, setVideoB] = useState("")
+
 
   return (
 
@@ -10,21 +23,22 @@ export default function Home() {
 
       <div className="grid grid-cols-2 gap-6 mb-8">
 
-        <div className="border border-gray-700 p-4 rounded-xl">
-          Video A
-        </div>
+        <VideoCard
+          label="Video A"
+          onVideoIngested={setVideoA}
+        />
 
-        <div className="border border-gray-700 p-4 rounded-xl">
-          Video B
-        </div>
-
-      </div>
-
-      <div className="border border-gray-700 p-6 rounded-xl">
-
-        Chat Panel
+        <VideoCard
+          label="Video B"
+          onVideoIngested={setVideoB}
+        />
 
       </div>
+
+      <ChatPanel
+        videoA={videoA}
+        videoB={videoB}
+      />
 
     </main>
   )
