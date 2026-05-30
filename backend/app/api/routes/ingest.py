@@ -24,7 +24,7 @@ from app.services.youtube_service import get_youtube_transcript
 
 from app.rag.chunking import chunk_text
 from app.rag.vector_store import store_chunks
-
+from app.services.metadata_service import get_youtube_metadata
 
 router = APIRouter()
 
@@ -38,16 +38,8 @@ def ingest_video(request: IngestRequest):
     #Chunk transcript
     chunks = chunk_text(data["transcript"])
 
-    #Build metadata
-    metadata = {
-        "video_id": data["video_id"],
-        "platform": "youtube",
-        "creator": "unknown",
-        "views": 0,
-        "likes": 0,
-        "comments": 0,
-        "engagement_rate": 0
-    }
+    #extract real metadata
+    metadata=get_youtube_metadata(request.url)
 
     #Store chunks
     store_chunks(

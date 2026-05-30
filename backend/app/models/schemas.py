@@ -23,3 +23,5 @@ class IngestRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     question: str
+    video_a: str
+    video_b: str

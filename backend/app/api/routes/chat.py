@@ -1,40 +1,38 @@
-'''
-This file creates:
-
-the conversational RAG API endpoint.
-
-Responsibilities:
-
-receive user questions
-trigger semantic retrieval
-generate grounded AI responses
-return sources/citations
-
-This endpoint becomes:
-
-the primary intelligence interface of your application.
-'''
-
 from fastapi import APIRouter
 from app.models.schemas import ChatRequest
-from app.rag.chain import ask_rag
+from app.rag.chain import compare_videos
 
-router=APIRouter() 
+router = APIRouter()
 
-@router.post("/chat") 
-
+@router.post("/chat")
 def chat(request: ChatRequest):
-    response=ask_rag(request.question)
-    formatted_sources=[]
-    for source in response["sources"]:
-        formatted_sources.append(
-            {
-                "content":source.page_content,
-                "metadata":source.metadata
-            }
-        )
-    
+
+    response = compare_videos(
+        question=request.question,
+        video_a=request.video_a,
+        video_b=request.video_b
+    )
+
+    formatted_video_a_sources = []
+
+    for source in response["video_a_sources"]:
+
+        formatted_video_a_sources.append({
+            "content": source.page_content,
+            "metadata": source.metadata
+        })
+
+    formatted_video_b_sources = []
+
+    for source in response["video_b_sources"]:
+
+        formatted_video_b_sources.append({
+            "content": source.page_content,
+            "metadata": source.metadata
+        })
+
     return {
-        "answer":response["answer"],
-        "sources":formatted_sources
+        "answer": response["answer"],
+        "video_a_sources": formatted_video_a_sources,
+        "video_b_sources": formatted_video_b_sources
     }

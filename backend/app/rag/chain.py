@@ -1,31 +1,9 @@
-'''
-This file orchestrates:
-
-semantic retrieval
-prompt construction
-Gemini generation
-source return
-
-It is the:
-
-reasoning layer of your RAG system.
-
-This is where:
-retrieval + LLM combine together.
-'''
-
-
 import os
-
 from dotenv import load_dotenv
-
 from openai import OpenAI
-
-from app.rag.retriever import retrieve_relevant_chunks
-
+from app.rag.retriever import retrieve_video_chunks
 
 load_dotenv()
-
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
@@ -33,25 +11,47 @@ client = OpenAI(
 )
 
 
-def ask_rag(question: str):
+def compare_videos(question, video_a, video_b):
 
-    retrieved_docs = retrieve_relevant_chunks(question)
+    video_a_docs = retrieve_video_chunks(
+        question,
+        video_a
+    )
 
-    context = "\n\n".join(
-        [doc.page_content for doc in retrieved_docs]
+    video_b_docs = retrieve_video_chunks(
+        question,
+        video_b
+    )
+
+    video_a_context = "\n\n".join(
+        [doc.page_content for doc in video_a_docs]
+    )
+
+    video_b_context = "\n\n".join(
+        [doc.page_content for doc in video_b_docs]
     )
 
     prompt = f"""
-You are an AI assistant analyzing social media video transcripts.
+                You are an AI creator intelligence assistant.
 
-Use ONLY the provided context to answer.
+                Analyze and compare two videos.
 
-CONTEXT:
-{context}
+                VIDEO A TRANSCRIPT CONTEXT:
+                {video_a_context}
 
-QUESTION:
-{question}
-"""
+                VIDEO B TRANSCRIPT CONTEXT:
+                {video_b_context}
+
+                QUESTION:
+                {question}
+
+                Provide:
+                1. Clear comparison
+                2. Engagement reasoning
+                3. Hook analysis
+                4. Content strategy insights
+                5. Improvement suggestions
+            """
 
     response = client.chat.completions.create(
         model="openai/gpt-4o-mini",
@@ -68,5 +68,6 @@ QUESTION:
 
     return {
         "answer": answer,
-        "sources": retrieved_docs
+        "video_a_sources": video_a_docs,
+        "video_b_sources": video_b_docs
     }
